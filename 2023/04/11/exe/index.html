@@ -415,6 +415,47 @@ pyinst">
 </ul>
 </li>
 </ol>
+<h2 id="可执行文件命名"><a href="#可执行文件命名" class="headerlink" title="可执行文件命名"></a>可执行文件命名</h2><p>使用<code>pyinstaller -D xx.py</code>和<code>pyinstaller -F xx.py</code>打包文件生成的可执行文件默认以被打包的python文件的名称命名。</p>
+<ul>
+<li>若想更改可执行文件的名字, 需要再加上 <code>-n 你想为可执行文件取的名字</code> 。命令如下:<pre class=" language-commandline"><code class="language-commandline">pyinstaller -D xx.py -n 你想为可执行文件取的名字
+pyinstaller -F xx.py -n 你想为可执行文件取的名字
+</code></pre>
+</li>
+</ul>
+<p><strong>实操展示</strong>:<br>以’单文件打包’为例, 将可执行文件命名为”你好世界“<br><img src="/../images/exe/RN0.jpg" alt="命令行操作展示"><br><img src="/../images/exe/RN1.jpg" alt="生成结果展示"></p>
+<h2 id="打包路径问题"><a href="#打包路径问题" class="headerlink" title="打包路径问题"></a>打包路径问题</h2><p>如果你打包的Python程序需要<strong>调用其他文件</strong>, 请在python文件中使用以下方法设置被调用<strong>文件的路径</strong>。 且在运行可执行文件时, 被调用的文件需与可执行文件放在<strong>同一路径</strong>下。</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">import</span> os
+<span class="token keyword">import</span> sys
+
+BASE_DIR <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>dirname<span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>realpath<span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+FILE_DIR <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>join<span class="token punctuation">(</span>BASE_DIR<span class="token punctuation">,</span> <span class="token string">"你要打开的文件名"</span><span class="token punctuation">)</span>
+</code></pre>
+<ul>
+<li>在之后代码中用<code>BASE_DIR</code>表示生成的<strong>可执行文件路径</strong>, 用<code>FILE_DIR</code>表示<strong>被调用文件路径</strong>。</li>
+</ul>
+<p>如需深入了解理由, 可以参考此<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1P24y1o7FY/?p=5&vd_source=6716391bbecea44121ad6f05c002ccfd">视频</a></p>
+<h2 id="打包导入模块问题"><a href="#打包导入模块问题" class="headerlink" title="打包导入模块问题"></a>打包导入模块问题</h2><ul>
+<li>打包过程中, 会自动打包<strong>所有</strong>被调用的模块(包括被调用的模块中被调用的模块), 但在原文件<strong>存在但没被调用</strong>的模块<strong>不会</strong>被打包。</li>
+</ul>
+<p>★★★ 但如果是通过<strong>动态导入的模块</strong>(如下代码), 则<strong>不会</strong>被打包, 在<strong>可执行文件</strong>运行时会报错。</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">import</span> importlib
+
+card <span class="token operator">=</span> importlib<span class="token punctuation">.</span>import_module<span class="token punctuation">(</span><span class="token string">"被动态导入的模块名"</span><span class="token punctuation">)</span>
+</code></pre>
+<p><strong>解决方法</strong>:</p>
+<ol>
+<li>先生成可执行文件</li>
+<li>在.spec文件的<code>hiddenimports</code>添加动态调用的模块<br><img src="/../images/exe/IP0.jpg" alt="添加动态调用的模块"></li>
+<li>通过.spec生成新的可执行文件。<ul>
+<li><strong>切记</strong>: 是对.spec而不是对python文件生成<br>以单文件打包为例</li>
+</ul>
+<pre class=" language-commandline"><code class="language-commandline"> pyinstaller -F spec文件名的文件名.spec
+</code></pre>
+<p> <img src="/../images/exe/IP1.jpg" alt="添加动态调用的模块"></p>
+</li>
+</ol>
+<p>如需深入了解理由, 可以参考此<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1P24y1o7FY/?p=6&vd_source=6716391bbecea44121ad6f05c002ccfd">视频</a></p>
 
                 
             </div>
