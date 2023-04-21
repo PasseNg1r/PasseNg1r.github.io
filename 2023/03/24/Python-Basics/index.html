@@ -343,6 +343,25 @@ python被run的.py文件即为当前程序的主程序。其所在的目录即�
 <li>通过 <code>from a import b</code>方法调用时, a的位置必须和主程序的.py文件在同一目录。</li>
 <li>通过<code>frome .x import y</code>方法调用时,x文件必须是在python解释器当前路径（主程序所在目录）的下级目录（下几级都可以）。</li>
 </ol>
+<h2 id="文件的调用"><a href="#文件的调用" class="headerlink" title="文件的调用"></a>文件的调用</h2><p>★★★为了使得代码具有可打包性(可打包成可执行文件)。在编写文件调用代码时，需要避免直接使用文件的相对路径调用文件, 应该通过获取文件当前绝对路径, 再使用文件的绝对路径调用文件。</p>
+<ol>
+<li>文件的绝对路径的获取需要用到两个python标准库<code>sys</code>和<code>os</code></li>
+<li>代码示例:<pre class=" language-python"><code class="language-python"><span class="token keyword">import</span> sys
+<span class="token keyword">import</span>  os
+
+BASE_DIR <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>dirname<span class="token punctuation">(</span>os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>realpath<span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+filename <span class="token operator">=</span> input<span class="token punctuation">(</span><span class="token string">"请输入你要使用的文件名:"</span><span class="token punctuation">)</span>
+FILE_DIR <span class="token operator">=</span> os<span class="token punctuation">.</span>path<span class="token punctuation">.</span>join<span class="token punctuation">(</span>BASE_DIR<span class="token punctuation">,</span> filename<span class="token punctuation">)</span>
+</code></pre>
+<ul>
+<li><code>sys.argv[0]</code>用于是获取程序名称</li>
+<li><code>os.path.realpath()</code>用于获取在系统中的绝对路径, 将其与<code>sys.argv[0]</code>结合使用从而获得该程序的绝对路径</li>
+<li><code>os.path.dirname()</code>用于获取所在文件夹, 与<code>os.path.realpath(sys.argv[0])</code>从而获取当前程序所在文件夹的绝对路径</li>
+<li><code>os.path.join(path1, path2)</code>用于将<code>path1</code>和<code>path2</code>连接起来, 组成一个新的路径</li>
+<li>通过以上方法调用文件, 即使通过单文件打包的方式打包python程序, 也能找到与可执行文件处于同一目录中的其他文件</li>
+</ul>
+</li>
+</ol>
 
                 
             </div>
