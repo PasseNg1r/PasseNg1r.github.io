@@ -343,7 +343,7 @@ python被run的.py文件即为当前程序的主程序。其所在的目录即�
 <li>通过 <code>from a import b</code>方法调用时, a的位置必须和主程序的.py文件在同一目录。</li>
 <li>通过<code>frome .x import y</code>方法调用时,x文件必须是在python解释器当前路径（主程序所在目录）的下级目录（下几级都可以）。</li>
 </ol>
-<h2 id="文件的调用"><a href="#文件的调用" class="headerlink" title="文件的调用"></a>文件的调用</h2><p>★★★为了使得代码具有可打包性(可打包成可执行文件)。在编写文件调用代码时，需要避免直接使用文件的相对路径调用文件, 应该通过获取文件当前绝对路径, 再使用文件的绝对路径调用文件。</p>
+<h2 id="文件的调用"><a href="#文件的调用" class="headerlink" title="文件的调用"></a>文件的调用</h2><p>★★★为了使得代码具有<strong>可打包性</strong>(可打包成可执行文件)。在编写文件调用代码时，需要<strong>避免</strong>直接使用文件的相对路径调用文件, 应该通过获取文件当前绝对路径, 再使用文件的绝对路径调用文件。</p>
 <ol>
 <li>文件的绝对路径的获取需要用到两个python标准库<code>sys</code>和<code>os</code></li>
 <li>代码示例:<pre class=" language-python"><code class="language-python"><span class="token keyword">import</span> sys
